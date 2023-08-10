@@ -1,16 +1,19 @@
-﻿using System;
+﻿using MyDataStucturesLibrary.ProjectFiles.Nodes;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace MyDataStucturesLibrary
 {
-    public class Queue<T> where T : IComparable
+    public class MyQueue<T> where T : IComparable
     {
-        private DataNode<T> peak;
-        private DataNode<T> lastNode;
         public int Count { get; private set; }
 
-        public Queue()
+        private Node<T> peak;
+        private Node<T> lastNode;
+
+        public MyQueue()
         {
             Count = 0;
         }
@@ -31,7 +34,7 @@ namespace MyDataStucturesLibrary
 
         private void AddFirstNode(T value)
         {
-            var newNode = new DataNode<T>(value);
+            var newNode = new Node<T>(value);
 
             peak = newNode;
             lastNode = newNode;
@@ -39,16 +42,17 @@ namespace MyDataStucturesLibrary
 
         private void AddNode(T value)
         {
-            var newNode = new DataNode<T>(value);
+            var newNode = new Node<T>(value);
 
-            lastNode.NextNode = newNode;
+            lastNode.Next = newNode;
             lastNode = newNode;
         }
 
         public T Dequeue()
         {
-            ThrowExceptionIfQueueIsEmpty();
-
+            if (QueueIsEmpty())
+                throw new Exception("Очередь пуста.");
+            
             Count--;
 
             if (peak == lastNode)
@@ -61,17 +65,14 @@ namespace MyDataStucturesLibrary
             }
         }
 
-        private void ThrowExceptionIfQueueIsEmpty()
+        private bool QueueIsEmpty()
         {
-            if (peak == null && lastNode == null)
-            {
-                throw new ArgumentNullException(nameof(peak), "Невозможно получить значение, так как очередь пуста");
-            }
+            return Count == 0;
         }
         
         private T GetLastValue()
         {
-            var result = peak.Value;
+            var result = peak.Data;
 
             peak = null;
             lastNode = null;
@@ -81,33 +82,35 @@ namespace MyDataStucturesLibrary
 
         private T GetPeakValue()
         {
-            var result = peak.Value;
+            var result = peak.Data;
 
-            peak = peak.NextNode;
+            peak = peak.Next;
 
             return result;
         }
 
         public T Peek()
         {
-            ThrowExceptionIfQueueIsEmpty();
+            if (QueueIsEmpty())
+                throw new Exception("Очередь пуста.");
 
-            return peak.Value;
+            return peak.Data;
         }
 
         public bool Contains(T desiredValue)
         {
-            ThrowExceptionIfQueueIsEmpty();
+            if (QueueIsEmpty())
+                return false;
 
             var tmpPeak = peak;
 
             while (tmpPeak != null)
             {
-                if (tmpPeak.Value.CompareTo(desiredValue) == 0)
+                if (tmpPeak.Data.CompareTo(desiredValue) == 0)
                 {
                     return true;
                 }
-                tmpPeak = tmpPeak.NextNode;
+                tmpPeak = tmpPeak.Next;
             }
 
             return false;
@@ -120,20 +123,5 @@ namespace MyDataStucturesLibrary
             Count = 0;
         }
 
-        public List<T> ToList()
-        {
-            ThrowExceptionIfQueueIsEmpty();
-
-            var tmpPeak = peak;
-            var result = new List<T>() { tmpPeak.Value };
-            
-            while (tmpPeak.NextNode != null)
-            {
-                result.Add(tmpPeak.NextNode.Value);
-                tmpPeak = tmpPeak.NextNode;
-            }
-
-            return result;
-        }
     }
 }
