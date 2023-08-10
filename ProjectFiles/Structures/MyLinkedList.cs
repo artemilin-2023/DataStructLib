@@ -1,6 +1,8 @@
 ﻿using MyDataStucturesLibrary.ProjectFiles.Nodes;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Dynamic;
 using System.Text;
 
 namespace MyDataStucturesLibrary.ProjectFiles.Structures
@@ -41,6 +43,15 @@ namespace MyDataStucturesLibrary.ProjectFiles.Structures
 
         private ListNode<T> GetNodeBy(int index)
         {
+            if (index == 0)
+            {
+                return firstNode;
+            }
+            else if (index == Count - 1)
+            {
+                return lastNode;
+            }
+
             if (index <= Count / 2)
             {
                 return GetNodeInLeftPart(index);
@@ -67,7 +78,7 @@ namespace MyDataStucturesLibrary.ProjectFiles.Structures
         {
             var result = lastNode;
 
-            for (int i = Count; i > index; i--)
+            for (int i = Count - 1; i > index; i--)
             {
                 result = result.Previous;
             }
@@ -111,6 +122,12 @@ namespace MyDataStucturesLibrary.ProjectFiles.Structures
             if (!IndexIsCorrect(index))
                 throw new IndexOutOfRangeException();
 
+            if (Count == 1)
+            {
+                Clear();
+                return;
+            }
+
             if (index == 0)
             {
                 firstNode = firstNode.Next;
@@ -128,12 +145,20 @@ namespace MyDataStucturesLibrary.ProjectFiles.Structures
                 deletedNode.Previous.Next = deletedNode.Next;
                 deletedNode.Next.Previous = deletedNode.Previous;
             }
-            
+
+            Count--;
         }
 
         private bool ListIsEmpty()
         {
             return Count == 0;
+        }
+
+        public void Clear()
+        {
+            firstNode = null;
+            lastNode = null;
+            Count = 0;
         }
 
         public bool Contains(T value)
@@ -144,13 +169,13 @@ namespace MyDataStucturesLibrary.ProjectFiles.Structures
             var leftNode = firstNode;
             var rightNode = lastNode;
 
-            for (var i = 0; i <= Count / 2; i++)
+            for (var i = 0; i < Count / 2; i++)
             {
                 if (leftNode.Data.CompareTo(value) == 0 || rightNode.Data.CompareTo(value) == 0)
                     return true;
 
                 leftNode = leftNode.Next;
-                rightNode = rightNode.Next;
+                rightNode = rightNode.Previous;
             }
 
             return false;
