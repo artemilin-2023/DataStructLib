@@ -36,15 +36,8 @@ namespace MyDataStucturesLibrary
 
             var result = peak.Data;
 
-            if (peak.Next == null)
-            {
-                peak = null;
-            }
-            else
-            {
-                peak = peak.Next;
-            }
-
+            peak = peak.Next;
+            
             Count--;
             return result;
         }
