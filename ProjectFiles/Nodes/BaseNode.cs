@@ -11,12 +11,7 @@ namespace MyDataStucturesLibrary.ProjectFiles.Nodes
         public T Data { get; set; }
 
         public BaseNode(T value)
-        {
-            if (value == null)
-            {
-                throw new ArgumentNullException(nameof(Data), "Полю \"Data\" не может быть присвоено значение типа null.");
-            }
-
+        { 
             Data = value;
         }
 

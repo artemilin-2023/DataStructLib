@@ -70,7 +70,7 @@ namespace MyDataStucturesLibrary
 
             while(tmpPeak != null)
             {
-                if (tmpPeak.Data.CompareTo(desiredValue) == 0)
+                if (tmpPeak.Data.Equals(desiredValue))
                 {
                     return true;
                 }

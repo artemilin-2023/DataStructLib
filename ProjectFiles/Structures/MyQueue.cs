@@ -6,7 +6,7 @@ using System.Text;
 
 namespace MyDataStucturesLibrary
 {
-    public class MyQueue<T> where T : IComparable
+    public class MyQueue<T>
     {
         public int Count { get; private set; }
 
@@ -106,7 +106,7 @@ namespace MyDataStucturesLibrary
 
             while (tmpPeak != null)
             {
-                if (tmpPeak.Data.CompareTo(desiredValue) == 0)
+                if (tmpPeak.Data.Equals(desiredValue))
                 {
                     return true;
                 }

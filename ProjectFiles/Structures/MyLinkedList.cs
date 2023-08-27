@@ -7,12 +7,12 @@ using System.Text;
 
 namespace MyDataStucturesLibrary.ProjectFiles.Structures
 {
-    public class MyLinkedList<T> where T: IComparable
+    public class MyLinkedList<T>
     {
         public int Count { get; private set; }
 
-        private ListNode<T> firstNode;
-        private ListNode<T> lastNode;
+        private TwoLinksNode<T> firstNode;
+        private TwoLinksNode<T> lastNode;
 
         public MyLinkedList()
         {
@@ -41,7 +41,7 @@ namespace MyDataStucturesLibrary.ProjectFiles.Structures
             return index < Count && index >= 0;
         }
 
-        private ListNode<T> GetNodeBy(int index)
+        private TwoLinksNode<T> GetNodeBy(int index)
         {
             if (index == 0)
             {
@@ -62,7 +62,7 @@ namespace MyDataStucturesLibrary.ProjectFiles.Structures
             }
         }
 
-        private ListNode<T> GetNodeInLeftPart(int index)
+        private TwoLinksNode<T> GetNodeInLeftPart(int index)
         {
             var result = firstNode;
 
@@ -74,7 +74,7 @@ namespace MyDataStucturesLibrary.ProjectFiles.Structures
             return result;
         }
 
-        private ListNode<T> GetNodeInRightPart(int index)
+        private TwoLinksNode<T> GetNodeInRightPart(int index)
         {
             var result = lastNode;
 
@@ -102,13 +102,13 @@ namespace MyDataStucturesLibrary.ProjectFiles.Structures
 
         private void AddFirstNode(T value)
         {
-            firstNode = new ListNode<T>(value);
+            firstNode = new TwoLinksNode<T>(value);
             lastNode = firstNode;
         }
 
         private void AddNewNode(T value)
         {
-            var tmpNode = new ListNode<T>(value, previous: lastNode);
+            var tmpNode = new TwoLinksNode<T>(value, previous: lastNode);
 
             lastNode.Next = tmpNode;
             lastNode = tmpNode;
@@ -171,7 +171,7 @@ namespace MyDataStucturesLibrary.ProjectFiles.Structures
 
             for (var i = 0; i < Count / 2; i++)
             {
-                if (leftNode.Data.CompareTo(value) == 0 || rightNode.Data.CompareTo(value) == 0)
+                if (leftNode.Data.Equals(value) || rightNode.Data.Equals(value))
                     return true;
 
                 leftNode = leftNode.Next;
